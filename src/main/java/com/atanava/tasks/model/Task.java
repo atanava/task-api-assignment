@@ -12,17 +12,17 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tasks", uniqueConstraints = {@UniqueConstraint(columnNames = {"modified", "created"}, name = "chk_modified")})
+@Table(name = "tasks", uniqueConstraints = {@UniqueConstraint(columnNames = {"modified", "added"}, name = "chk_modified")})
 public class Task extends AbstractBaseEntity {
 
     @Column(name = "description", nullable = false)
     @NotBlank
     private String description;
 
-    @Column(name = "created", nullable = false)
+    @Column(name = "added", nullable = false)
     @NotNull
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
-    private LocalDateTime created;
+    private LocalDateTime added;
 
     @Column(name = "modified", nullable = false)
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
@@ -38,10 +38,10 @@ public class Task extends AbstractBaseEntity {
         this(null, description, LocalDateTime.now(),null, false);
     }
 
-    public Task(Integer id, String description, LocalDateTime created, LocalDateTime modified, boolean completed) {
+    public Task(Integer id, String description, LocalDateTime added, LocalDateTime modified, boolean completed) {
         super(id);
         this.description = description;
-        this.created = created;
+        this.added = added;
         this.modified = modified;
         this.completed = completed;
     }
@@ -54,8 +54,8 @@ public class Task extends AbstractBaseEntity {
         this.description = description;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
+    public LocalDateTime getAdded() {
+        return added;
     }
 
     public LocalDateTime getModified() {

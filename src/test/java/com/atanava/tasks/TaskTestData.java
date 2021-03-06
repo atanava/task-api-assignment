@@ -4,10 +4,7 @@ import com.atanava.tasks.model.Task;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.atanava.tasks.model.Task.START_SEQ;
 import static java.time.LocalDateTime.parse;
@@ -16,7 +13,7 @@ public class TaskTestData {
 
     public static TestMatcher<Task> TASK_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Task.class);
     public static TestMatcher<Task> IGNORE_DATETIME_TASK_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Task.class,
-            "created", "modified");
+            "added", "modified");
 
     public static final int TASK_1 = START_SEQ;
     public static final int TASK_2 = START_SEQ + 1;
@@ -41,7 +38,7 @@ public class TaskTestData {
     }
 
     public static Task getUpdated() {
-        return new Task(TASK_5, "Modified task", task5.getCreated(), null, false);
+        return new Task(TASK_5, "Modified task", task5.getAdded(), null, false);
     }
 
     public static Task getNotExist() {

@@ -51,11 +51,11 @@ public class TaskService {
     }
 
     public List<Task> getAll() {
-        return repository.findAll(Sort.by(Sort.Direction.DESC, "created"));
+        return repository.findAll(Sort.by(Sort.Direction.DESC, "added"));
     }
 
     public List<Task> getAllByCreatedRange(@Nullable LocalDate startDate, @Nullable LocalDate endDate) {
-        return repository.getAllByCreatedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
+        return repository.getAllByAddedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
     }
 
     public List<Task> getAllByModifiedRange(@Nullable LocalDate startDate, @Nullable LocalDate endDate) {

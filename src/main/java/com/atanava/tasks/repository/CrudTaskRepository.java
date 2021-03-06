@@ -18,19 +18,19 @@ public interface CrudTaskRepository extends JpaRepository<Task, Integer> {
     @Query("DELETE FROM Task t WHERE t.id=:id")
     int delete(@Param("id") int id);
 
-    @Query("SELECT t FROM Task t WHERE t.created >= :startDate AND t.created < :endDate ORDER BY t.created DESC")
-    List<Task> getAllByCreatedRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    @Query("SELECT t FROM Task t WHERE t.added >= :startDate AND t.added < :endDate ORDER BY t.added DESC")
+    List<Task> getAllByAddedRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
-    @Query("SELECT t FROM Task t WHERE t.modified >= :startDate AND t.modified < :endDate ORDER BY t.created DESC")
+    @Query("SELECT t FROM Task t WHERE t.modified >= :startDate AND t.modified < :endDate ORDER BY t.added DESC")
     List<Task> getAllByModifiedRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
-    @Query("SELECT t FROM Task t WHERE t.completed=:completed ORDER BY t.created DESC")
+    @Query("SELECT t FROM Task t WHERE t.completed=:completed ORDER BY t.added DESC")
     List<Task> getAllByCompleted(@Param("completed") boolean completed);
 
     @Query("SELECT t FROM Task t WHERE t.modified IS NOT NULL ORDER BY t.modified DESC")
     List<Task> getAllModified();
 
-    @Query("SELECT t FROM Task t WHERE t.modified IS NULL ORDER BY t.created DESC")
+    @Query("SELECT t FROM Task t WHERE t.modified IS NULL ORDER BY t.added DESC")
     List<Task> getAllUnmodified();
 
     @Transactional
