@@ -56,21 +56,12 @@ public class TaskService {
     }
 
     public List<Task> getAllByFilter(String filter, @Nullable LocalDate startDate, @Nullable LocalDate endDate) {
-        List<Task> tasks;
-        switch (filter) {
-            case "added" :
-                tasks = repository.getAllByAddedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
-                break;
-            case "modified" :
-                tasks = repository.getAllByModifiedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
-                break;
-            case "completed" :
-                tasks = repository.getAllByCompletedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
-                break;
-            default :
-                tasks = Collections.emptyList();
-        }
-        return tasks;
+        return switch (filter) {
+            case "added" -> repository.getAllByAddedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
+            case "modified" -> repository.getAllByModifiedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
+            case "completed" -> repository.getAllByCompletedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
+            default -> Collections.emptyList();
+        };
     }
 
     public List<Task> getAllByCompleted(boolean completed) {
