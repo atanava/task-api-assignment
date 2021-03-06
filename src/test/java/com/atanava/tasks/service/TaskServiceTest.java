@@ -5,6 +5,7 @@ import com.atanava.tasks.model.Task;
 import com.atanava.tasks.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.TransactionSystemException;
 
 import javax.validation.ConstraintViolationException;
 import java.sql.BatchUpdateException;
@@ -56,20 +57,37 @@ class TaskServiceTest extends AbstractTest {
     }
 
     @Test
+    void updateNotFound() {
+        assertThrows(NotFoundException.class, () -> service.update(getNotExist()));
+    }
+
+    @Test
+    void updateInvalid() {
+        Task invalid = getUpdated();
+        invalid.setDescription("");
+        assertThrows(TransactionSystemException.class, () -> service.update(invalid));
+    }
+
+    @Test
     void complete() {
         service.complete(TASK_4, true);
         assertTrue(service.get(TASK_4).isCompleted());
     }
 
     @Test
-    void updateNotFound() {
-        assertThrows(NotFoundException.class, () -> service.update(getNotExist()));
+    void completeNotFound() {
+        assertThrows(NotFoundException.class, () -> service.complete(NOT_EXIST, true));
     }
 
     @Test
     void delete() {
         service.delete(TASK_2);
         assertThrows(NotFoundException.class, () -> service.get(TASK_2));
+    }
+
+    @Test
+    void deleteNotFound() {
+        assertThrows(NotFoundException.class, () -> service.delete(NOT_EXIST));
     }
 
     @Test
@@ -136,10 +154,10 @@ class TaskServiceTest extends AbstractTest {
 
     @Test
     void getAllModified() {
-        List<Task> allActual = service.getAllModified(true);
+        List<Task> allActual = service.getAllByModified(true);
         TASK_MATCHER.assertMatch(allActual, task4, task2);
 
-        allActual = service.getAllModified(false);
+        allActual = service.getAllByModified(false);
         TASK_MATCHER.assertMatch(allActual, task5, task3, task1);
     }
 

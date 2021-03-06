@@ -29,13 +29,13 @@ public class TaskService {
     public Task create(Task task) {
         Assert.notNull(task, "task must not be null");
         task.setAdded(LocalDateTime.now());
-        return repository.saveTask(task);
+        return repository.checkAndSave(task);
     }
 
     public void update(Task task) {
         Assert.notNull(task, "task must not be null");
         task.setModified(LocalDateTime.now());
-        checkNotFoundWithId(repository.saveTask(task), task.id());
+        checkNotFoundWithId(repository.checkAndSave(task), task.id());
     }
 
     @Transactional
@@ -70,7 +70,7 @@ public class TaskService {
         return completed ? repository.getAllCompleted() : repository.getAllUnCompleted();
     }
 
-    List<Task> getAllModified(boolean isModified) {
+    public List<Task> getAllByModified(boolean isModified) {
         return isModified ? repository.getAllModified() : repository.getAllUnmodified();
     }
 

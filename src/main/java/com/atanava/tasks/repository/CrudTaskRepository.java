@@ -43,7 +43,7 @@ public interface CrudTaskRepository extends JpaRepository<Task, Integer> {
     List<Task> getAllUnmodified();
 
     @Transactional
-    default Task saveTask(Task task) {
+    default Task checkAndSave(Task task) {
         if (!task.isNew() && findById(task.getId()).isEmpty()) {
             return null;
         }

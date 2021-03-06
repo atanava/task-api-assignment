@@ -85,6 +85,7 @@ public class TaskRestController {
 
     @GetMapping("/filter")
     public List<Task> getAllFiltered(@RequestParam(required = false) Boolean completed,
+                                     @RequestParam(required = false) Boolean modified,
                                      @RequestParam(required = false) String inRangeBy,
                                      @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                                      @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
@@ -92,6 +93,7 @@ public class TaskRestController {
                 completed, inRangeBy, startDate, endDate);
 
         return completed != null ? service.getAllByCompleted(completed)
+                : modified != null ? service.getAllByModified(modified)
                 : inRangeBy != null ? service.getAllByFilter(inRangeBy, startDate, endDate)
                 : Collections.emptyList();
     }
