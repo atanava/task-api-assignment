@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import static com.atanava.tasks.util.DateTimeUtil.atStartOfDayOrMin;
@@ -39,7 +40,7 @@ public class TaskService {
     @Transactional
     public void complete(int id, boolean completed) {
         Task task = get(id);
-        task.setCompleted(completed);
+        task.setCompleted(completed ? LocalDateTime.now() : null);
     }
 
     public void delete(int id) {
@@ -54,16 +55,26 @@ public class TaskService {
         return repository.findAll(Sort.by(Sort.Direction.DESC, "added"));
     }
 
-    public List<Task> getAllByCreatedRange(@Nullable LocalDate startDate, @Nullable LocalDate endDate) {
-        return repository.getAllByAddedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
-    }
-
-    public List<Task> getAllByModifiedRange(@Nullable LocalDate startDate, @Nullable LocalDate endDate) {
-        return repository.getAllByModifiedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
+    public List<Task> getAllByFilter(String filter, @Nullable LocalDate startDate, @Nullable LocalDate endDate) {
+        List<Task> tasks;
+        switch (filter) {
+            case "added" :
+                tasks = repository.getAllByAddedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
+                break;
+            case "modified" :
+                tasks = repository.getAllByModifiedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
+                break;
+            case "completed" :
+                tasks = repository.getAllByCompletedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
+                break;
+            default :
+                tasks = Collections.emptyList();
+        }
+        return tasks;
     }
 
     public List<Task> getAllByCompleted(boolean completed) {
-        return repository.getAllByCompleted(completed);
+        return completed ? repository.getAllCompleted() : repository.getAllUnCompleted();
     }
 
     List<Task> getAllModified(boolean isModified) {

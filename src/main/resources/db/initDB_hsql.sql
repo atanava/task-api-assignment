@@ -9,6 +9,7 @@ CREATE TABLE tasks
     description VARCHAR(255)            NOT NULL,
     added     TIMESTAMP DEFAULT now() NOT NULL,
     modified    TIMESTAMP,
-    completed   BOOLEAN   DEFAULT FALSE NOT NULL,
-    CONSTRAINT chk_modified CHECK (modified IS NULL OR modified > added)
+    completed   TIMESTAMP,
+    CONSTRAINT chk_modified CHECK (modified IS NULL OR modified > added),
+    CONSTRAINT chk_completed CHECK (completed IS NULL OR (completed > added AND completed > modified))
 );

@@ -12,7 +12,10 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tasks", uniqueConstraints = {@UniqueConstraint(columnNames = {"modified", "added"}, name = "chk_modified")})
+@Table(name = "tasks", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"modified", "added"}, name = "chk_modified"),
+        @UniqueConstraint(columnNames = {"completed", "added", "modified"}, name = "chk_completed")
+})
 public class Task extends AbstractBaseEntity {
 
     @Column(name = "description", nullable = false)
@@ -28,17 +31,17 @@ public class Task extends AbstractBaseEntity {
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime modified;
 
-    @Column(name = "completed", nullable = false)
-    @NotNull
-    private boolean completed;
+    @Column(name = "completed")
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
+    private LocalDateTime completed;
 
     public Task() {}
 
     public Task(String description) {
-        this(null, description, LocalDateTime.now(),null, false);
+        this(null, description, LocalDateTime.now(),null, null);
     }
 
-    public Task(Integer id, String description, LocalDateTime added, LocalDateTime modified, boolean completed) {
+    public Task(Integer id, String description, LocalDateTime added, LocalDateTime modified, LocalDateTime completed) {
         super(id);
         this.description = description;
         this.added = added;
@@ -67,10 +70,14 @@ public class Task extends AbstractBaseEntity {
     }
 
     public boolean isCompleted() {
+        return completed != null;
+    }
+
+    public LocalDateTime getCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(LocalDateTime completed) {
         this.completed = completed;
     }
 }

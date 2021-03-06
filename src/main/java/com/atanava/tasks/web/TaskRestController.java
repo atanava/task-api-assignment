@@ -92,8 +92,7 @@ public class TaskRestController {
                 completed, inRangeBy, startDate, endDate);
 
         return completed != null ? service.getAllByCompleted(completed)
-                : (inRangeBy != null && inRangeBy.equals("created")) ? service.getAllByCreatedRange(startDate, endDate)
-                : (inRangeBy != null && inRangeBy.equals("modified")) ? service.getAllByModifiedRange(startDate, endDate)
+                : inRangeBy != null ? service.getAllByFilter(inRangeBy, startDate, endDate)
                 : Collections.emptyList();
     }
 

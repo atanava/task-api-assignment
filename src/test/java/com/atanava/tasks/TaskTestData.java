@@ -13,7 +13,7 @@ public class TaskTestData {
 
     public static TestMatcher<Task> TASK_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Task.class);
     public static TestMatcher<Task> IGNORE_DATETIME_TASK_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Task.class,
-            "added", "modified");
+            "added", "modified", "completed");
 
     public static final int TASK_1 = START_SEQ;
     public static final int TASK_2 = START_SEQ + 1;
@@ -26,23 +26,24 @@ public class TaskTestData {
     public static LocalDateTime now = LocalDateTime.now();
     public static LocalDate day1 = LocalDate.parse("2021-03-03");
     public static LocalDate day2 = LocalDate.parse("2021-03-04");
+    public static LocalDate day3 = LocalDate.parse("2021-03-05");
 
-    public static Task task1 = new Task(TASK_1,"Do work 1", parse("2021-03-03T10:00:00"), null, true);
-    public static Task task2 = new Task(TASK_2,"Do work 2", parse("2021-03-03T12:00:00"), parse("2021-03-03T23:59:59"), false);
-    public static Task task3 = new Task(TASK_3,"Do work 3", parse("2021-03-04T09:00:00"), null, true);
-    public static Task task4 = new Task(TASK_4,"Do work 4", parse("2021-03-04T10:00:00"), parse("2021-03-04T12:00:00"), false);
-    public static Task task5 = new Task(TASK_5,"Do work 5", parse("2021-03-04T14:25:10"), null, false);
+    public static Task task1 = new Task(TASK_1,"Do work 1", parse("2021-03-03T10:00:00"), null, parse("2021-03-04T10:00:00"));
+    public static Task task2 = new Task(TASK_2,"Do work 2", parse("2021-03-03T12:00:00"), parse("2021-03-03T23:59:59"), null);
+    public static Task task3 = new Task(TASK_3,"Do work 3", parse("2021-03-04T09:00:00"), null, parse("2021-03-05T10:00:00"));
+    public static Task task4 = new Task(TASK_4,"Do work 4", parse("2021-03-04T10:00:00"), parse("2021-03-04T12:00:00"), null);
+    public static Task task5 = new Task(TASK_5,"Do work 5", parse("2021-03-04T14:25:10"), null, null);
 
     public static Task getNew() {
         return  new Task("new task");
     }
 
     public static Task getUpdated() {
-        return new Task(TASK_5, "Modified task", task5.getAdded(), null, false);
+        return new Task(TASK_5, "Modified task", task5.getAdded(), null, null);
     }
 
     public static Task getNotExist() {
-        return new Task(NOT_EXIST, "OK", now, null, false);
+        return new Task(NOT_EXIST, "OK", now, null, null);
     }
 
     public static List<Task> getAllExpected() {

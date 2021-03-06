@@ -31,15 +31,19 @@ class TaskServiceTest extends AbstractTest {
 
     @Test
     void createWithException() {
-        validateRootCause(() -> service.create(new Task(null, "", now, null, false)),
+        validateRootCause(() -> service.create(new Task(null, "", now, null, null)),
                 ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Task(null, null, now, null, false)),
+        validateRootCause(() -> service.create(new Task(null, null, now, null, null)),
                 ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Task(null, "OK", null, null, false)),
+        validateRootCause(() -> service.create(new Task(null, "OK", null, null, null)),
                 ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Task(null, "OK", now, now, false)),
+        validateRootCause(() -> service.create(new Task(null, "OK", now, now, null)),
                 BatchUpdateException.class);
-        validateRootCause(() -> service.create(new Task(null, "OK", now, now.minusSeconds(1), false)),
+        validateRootCause(() -> service.create(new Task(null, "OK", now, now.minusSeconds(1), null)),
+                BatchUpdateException.class);
+        validateRootCause(() -> service.create(new Task(null, "OK", now, null, now.minusSeconds(1))),
+                BatchUpdateException.class);
+        validateRootCause(() -> service.create(new Task(null, "OK", now, now.plusMinutes(10), now.plusMinutes(5))),
                 BatchUpdateException.class);
     }
 
@@ -89,20 +93,29 @@ class TaskServiceTest extends AbstractTest {
 
     @Test
     void getAllByCreatedRange() {
-        List<Task> allActual = service.getAllByCreatedRange(day1, day1);
+        List<Task> allActual = service.getAllByFilter("added", day1, day1);
         TASK_MATCHER.assertMatch(allActual, task2, task1);
 
-        allActual = service.getAllByCreatedRange(day2, null);
+        allActual = service.getAllByFilter("added", day2, null);
         TASK_MATCHER.assertMatch(allActual, task5, task4, task3);
     }
 
     @Test
     void getAllByModifiedRange() {
-        List<Task> allActual = service.getAllByModifiedRange(day1, day1);
+        List<Task> allActual = service.getAllByFilter("modified", day1, day1);
         TASK_MATCHER.assertMatch(allActual, task2);
 
-        allActual = service.getAllByModifiedRange(day2, day2);
+        allActual = service.getAllByFilter("modified", day2, day2);
         TASK_MATCHER.assertMatch(allActual, task4);
+    }
+
+    @Test
+    void getAllByCompletedRange() {
+        List<Task> allActual = service.getAllByFilter("completed", day2, day2);
+        TASK_MATCHER.assertMatch(allActual, task1);
+
+        allActual = service.getAllByFilter("completed", day2, day3);
+        TASK_MATCHER.assertMatch(allActual, task3, task1);
     }
 
     @Test
