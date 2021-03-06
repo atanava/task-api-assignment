@@ -1,5 +1,6 @@
 package com.atanava.tasks.model;
 
+import com.atanava.tasks.View;
 import com.atanava.tasks.util.DateTimeUtil;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,7 +24,7 @@ public class Task extends AbstractBaseEntity {
     private String description;
 
     @Column(name = "added", nullable = false)
-    @NotNull
+    @NotNull(groups = View.Persist.class)
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime added;
 
@@ -38,7 +39,7 @@ public class Task extends AbstractBaseEntity {
     public Task() {}
 
     public Task(String description) {
-        this(null, description, LocalDateTime.now(),null, null);
+        this(null, description, null,null, null);
     }
 
     public Task(Integer id, String description, LocalDateTime added, LocalDateTime modified, LocalDateTime completed) {
@@ -59,6 +60,10 @@ public class Task extends AbstractBaseEntity {
 
     public LocalDateTime getAdded() {
         return added;
+    }
+
+    public void setAdded(LocalDateTime added) {
+        this.added = added;
     }
 
     public LocalDateTime getModified() {

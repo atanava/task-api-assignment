@@ -28,6 +28,7 @@ public class TaskService {
 
     public Task create(Task task) {
         Assert.notNull(task, "task must not be null");
+        task.setAdded(LocalDateTime.now());
         return repository.saveTask(task);
     }
 
@@ -60,6 +61,7 @@ public class TaskService {
             case "added" -> repository.getAllByAddedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
             case "modified" -> repository.getAllByModifiedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
             case "completed" -> repository.getAllByCompletedRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
+            case "uncompleted" -> repository.getAllUncompletedByRange(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate));
             default -> Collections.emptyList();
         };
     }

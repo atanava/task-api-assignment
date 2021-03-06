@@ -1,11 +1,11 @@
 package com.atanava.tasks.util;
 
 import com.atanava.tasks.model.AbstractBaseEntity;
+import com.atanava.tasks.util.exception.ErrorType;
 import com.atanava.tasks.util.exception.IllegalRequestDataException;
 import com.atanava.tasks.util.exception.NotFoundException;
 import org.slf4j.Logger;
 
-import javax.lang.model.type.ErrorType;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.*;
 import java.util.Set;

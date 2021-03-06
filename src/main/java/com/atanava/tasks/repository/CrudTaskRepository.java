@@ -27,6 +27,9 @@ public interface CrudTaskRepository extends JpaRepository<Task, Integer> {
     @Query("SELECT t FROM Task t WHERE t.completed >= :startDate AND t.completed < :endDate ORDER BY t.completed DESC")
     List<Task> getAllByCompletedRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
+    @Query("SELECT t FROM Task t WHERE t.completed IS NULL AND t.added >= :startDate AND t.added < :endDate ORDER BY t.added DESC")
+    List<Task> getAllUncompletedByRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
     @Query("SELECT t FROM Task t WHERE t.completed IS NOT NULL ORDER BY t.added DESC")
     List<Task> getAllCompleted();
 

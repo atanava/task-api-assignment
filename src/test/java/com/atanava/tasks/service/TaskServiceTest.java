@@ -35,8 +35,6 @@ class TaskServiceTest extends AbstractTest {
                 ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Task(null, null, now, null, null)),
                 ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Task(null, "OK", null, null, null)),
-                ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Task(null, "OK", now, now, null)),
                 BatchUpdateException.class);
         validateRootCause(() -> service.create(new Task(null, "OK", now, now.minusSeconds(1), null)),
@@ -116,6 +114,15 @@ class TaskServiceTest extends AbstractTest {
 
         allActual = service.getAllByFilter("completed", day2, day3);
         TASK_MATCHER.assertMatch(allActual, task3, task1);
+    }
+
+    @Test
+    void getAllUncompletedByRange() {
+        List<Task> allActual = service.getAllByFilter("uncompleted", day1, day1);
+        TASK_MATCHER.assertMatch(allActual, task2);
+
+        allActual = service.getAllByFilter("uncompleted", day2, day3);
+        TASK_MATCHER.assertMatch(allActual, task5, task4);
     }
 
     @Test
