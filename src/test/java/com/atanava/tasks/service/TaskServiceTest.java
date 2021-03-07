@@ -1,6 +1,7 @@
 package com.atanava.tasks.service;
 
 import com.atanava.tasks.AbstractTest;
+import com.atanava.tasks.ActiveDbProfileResolver;
 import com.atanava.tasks.model.Task;
 import com.atanava.tasks.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.atanava.tasks.TaskTestData.*;
 
-@ActiveProfiles("postgres")
+@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 class TaskServiceTest extends AbstractTest {
 
     @Autowired

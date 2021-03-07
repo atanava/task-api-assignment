@@ -1,5 +1,6 @@
 package com.atanava.tasks.web;
 
+import com.atanava.tasks.ActiveDbProfileResolver;
 import com.atanava.tasks.model.Task;
 import com.atanava.tasks.service.TaskService;
 import com.atanava.tasks.util.exception.NotFoundException;
@@ -22,7 +23,7 @@ import static com.atanava.tasks.TestUtil.*;
 import static com.atanava.tasks.util.exception.ErrorType.VALIDATION_ERROR;
 import static com.atanava.tasks.util.exception.ErrorType.DATA_NOT_FOUND;
 
-@ActiveProfiles("postgres")
+@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 class TaskRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = TaskRestController.REST_URL + '/';
