@@ -7,6 +7,7 @@ import com.atanava.tasks.web.json.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -21,6 +22,7 @@ import static com.atanava.tasks.TestUtil.*;
 import static com.atanava.tasks.util.exception.ErrorType.VALIDATION_ERROR;
 import static com.atanava.tasks.util.exception.ErrorType.DATA_NOT_FOUND;
 
+@ActiveProfiles("postgres")
 class TaskRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = TaskRestController.REST_URL + '/';

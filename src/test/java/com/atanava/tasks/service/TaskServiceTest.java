@@ -5,6 +5,7 @@ import com.atanava.tasks.model.Task;
 import com.atanava.tasks.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.TransactionSystemException;
 
 import javax.validation.ConstraintViolationException;
@@ -14,6 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.atanava.tasks.TaskTestData.*;
 
+@ActiveProfiles("postgres")
 class TaskServiceTest extends AbstractTest {
 
     @Autowired
