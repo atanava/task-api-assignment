@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionSystemException;
 
 import javax.validation.ConstraintViolationException;
-import java.sql.BatchUpdateException;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,13 +37,13 @@ class TaskServiceTest extends AbstractTest {
         validateRootCause(() -> service.create(new Task(null, null, now, null, null)),
                 ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Task(null, "OK", now, now, null)),
-                BatchUpdateException.class);
+                SQLException.class);
         validateRootCause(() -> service.create(new Task(null, "OK", now, now.minusSeconds(1), null)),
-                BatchUpdateException.class);
+                SQLException.class);
         validateRootCause(() -> service.create(new Task(null, "OK", now, null, now.minusSeconds(1))),
-                BatchUpdateException.class);
+                SQLException.class);
         validateRootCause(() -> service.create(new Task(null, "OK", now, now.plusMinutes(10), now.plusMinutes(5))),
-                BatchUpdateException.class);
+                SQLException.class);
     }
 
     @Test
