@@ -34,7 +34,7 @@ Create RestAPI in which would be possible to maintain tasks with following funct
 
 ### How To Run
 
-* Build and package with Apache Maven or use already prepared task-api.war from the target folder.  
+* Build and package with Apache Maven or use already prepared task-api.war from the root directory of the project.  
   By-default application runs using embedded HSQLDB.  
   If you want to run it with Postgres then you need to change "spring.profiles.default" parameter in web.xml from "hsqldb" to "postgres"
 * Deploy to Apache Tomcat (app tested with 9.0.41 version)
